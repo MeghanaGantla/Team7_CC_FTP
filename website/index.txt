@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>US Accident Analysis</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div id="header">
+		US Accident Analysis
+	</div>
+
+	<div id="intro">
+		<h2> Abstract </h2>
+		<p>This project focuses on understanding the parameters affecting an accident's severity and other constraints like visibility at the time of the incident and the total affected time by the incident. The reason behind selecting this particular dataset is mainly its usability and detailed columns. Many thousands of accidents happen each day across the world and they vary in severity and reason. In this analysis, we understand the constraints that affect these incidents and also find out the hotspots. </p>
+		<h2> Description of Dataset </h2>
+		<p>The dataset is from Kaggle and has over 2.8M rows with 47 columns. In the data, we have 14 numeric columns, 20 categorical columns, and 13 binary columns. These columns also include 3 DateTime columns that are under object datatype. The description of columns after preprocessing is as follows, </p>
+		<ul style="list-style-type: square;">
+  		<li><b>Index: </b>The index of the row.</li>
+  		<li><b>Severity: </b>A number from 1 to 4 that represents the severity of the accident</li>
+  		<li><b>Start_Lat: </b>The latitude of the starting point of the accident.</li>
+		<li><b>Start_Lng: </b>The longitude of the starting point of the accident. </li>
+		<li><b>End_Lat: </b>The latitude of the ending point of the accident.  </li>
+		<li><b>End_Lng: </b>The longitude of the ending point of the accident.  </li>
+		<li><b>Distance(mi): </b>The distance of the accident from the starting point.  </li>
+		<li><b>Temperature(F): </b>The temperature at the time of the accident.  </li>
+		<li><b>Wind_Chill(F): </b>The wind chill at the time of the accident.  </li>
+		<li><b>Humidity(%): </b>The humidity at the time of the accident.  </li>
+		<li><b>Pressure(in): </b>The pressure at the time of the accident.  </li>
+		<li><b>Visibility(mi): </b>The visibility at the time of the accident.  </li>
+		<li><b>Wind_Speed(mph): </b>The wind speed at the time of the accident.  </li>
+		<li><b>Precipitation(in): </b>The precipitation at the time of the accident.  </li>
+		<li><b>Start_Time: </b>The start time of the accident.  </li>
+		<li><b>End_Time: </b>The end time of the accident.</li>
+		<li><b>Street: </b>The name of the street where the accident occurred. </li>
+		<li><b>Side: </b>The side of the street where the accident occurred. </li>
+		<li><b>City: </b>The name of the city where the accident occurred. </li>
+		<li><b>County: </b>The name of the county where the accident occurred. </li>
+		<li><b>State: </b>The name of the state where the accident occurred. </li>
+		</ul>
+		<p> There are several more columns in this dataset that we felt are not relavent to this analysis and have dropped during preprocessing stage of the analysis. </p>
+
+	</div>
+	<div id = 'preprocessing'>
+		<style>
+    		#image {
+      		display: block;
+      		margin: 0 auto;
+    			}
+    		#imageSelector {
+  			font-size: 15px;
+  			padding: 10px;
+  			margin: 5px auto;
+  			max-width: 400px;
+  			display: block;
+  			text-align: center;
+			}
+		.image1 {
+      		width: 600px;
+      		height: 500px;
+    			}
+		.image3 {
+      		width: 1000px;
+      		height: 500px;
+			margin: 0 auto;
+    			}
+		</style>
+		<h2> Understand more about the data </h2>
+		<select id="imageSelector" onchange="changeImage()">
+    			<option value="image1.jpg">Data types</option>
+			<option value="image4.jpg">Data describe</option>
+    			<option value="image2.jpg">Numeric columns</option>
+    			<option value="image3.jpg">Categorical columns</option>
+  		</select>
+		<br>
+		<img id="image" class="image1" src="image1.jpg" alt="Image 1">
+  		<p id = "description">Here, we can view all the columns in the dataset and understand their data types. We can see that there are a total of 47 columns in this dataset with a fair amount of them being numeric, categorical, and binary each.</p>
+
+		<script>
+    			function changeImage() {
+      		var imageSelector = document.getElementById("imageSelector");
+      		var image = document.getElementById("image");
+      		var description = document.getElementById("description");
+
+      		image.src = imageSelector.value;
+
+      		switch(imageSelector.value) {
+        		case "image1.jpg":
+			image.classList = "image1";
+          		description.innerHTML = "Here, we can view all the columns in the dataset and understand their data types. We can see that there are a total of 47 columns in this dataset with a fair amount of them being numeric, categorical, and binary each.";
+          		break;
+
+        		case "image2.jpg":
+			image.classList = "image3";
+          		description.innerHTML = "In total, we have 14 Numeric columns in this dataset. Above we can see how each of these columns are given and the measurements in which each of these are given in. Example: Distance is given in miles.";
+          		break;
+
+        		case "image3.jpg":
+			image.classList = "image3";
+          		description.innerHTML = "Above we have 11 categorical columns and we can see how they are given in the dataset.";
+          		break;
+
+			case "image4.jpg":
+			image.classList = "image1";
+          		description.innerHTML = "Here is the description for all the numerical columns in the data. We can observe the counts, means, standard deviations, and more about the columns.";
+          		break;
+      		}}
+  		</script>
+	</div>
+
+	<div id='missings'>
+  		<h2>Preprocessing</h2>
+  		<h3>Missing values</h3>
+  		<p>Preprocessing of the data includes finding and handling the missing values in the dataset. Below is the list of missing values and their percentages in respective columns before preprocessing,</p>
+  		<img src='image5.jpg' style='width: 600px; height: 400px; display: block; margin: 0 auto;'>
+  		<p>We can see in the visualization below the percentages of missing values in each of the interested columns. We can handle the missing values by dropping the columns with more than 30% missing values, removing the rows with missing values, or replacing the missing values with mean/mode of the respective column. Here we have decided to drop the columns with a lot of missing values first and then removing the rows next.</p>
+  		<img src='image6.jpg' style='width: 800px; height: 450px; display: block; margin: 0 auto;'>
+		<h3> Handling missing values </h3>
+		<p> From the dataset, we have selected suitable columns for this analysis and have dropped all the binary columns, ‘Number’, ‘Zipcode’, ‘Country’, ‘Civil_Twilight’, ‘Nautical_Twilight’, ‘Astronomical_Twilight’. We have dropped all the rows containing missing values and the dataset is now 2.2M rows, and 26 columns at this point.</p>
+		<img src='image7.jpg' style='width: 450px; height: 300px; display: block; margin: 0 auto;'>
+	</div>
+
+	<div id='EDA'>
+		<style>
+    		#imageSelector2 {
+  			font-size: 15px;
+  			padding: 10px;
+  			margin: 5px auto;
+  			max-width: 400px;
+  			display: block;
+  			text-align: center;
+			}
+		</style>
+  		<h2>Exploratory data analysis</h2>
+		<h3>Top locations and conditions</h3>
+		<p> All of the accidents in this dataset have occured inside the United States of America. Data contains the state, city, county, street, nearby airport if there is one, and weather condition at the time of accidents. We wanted to answer questions like which of the locations have the highest number accidents and understand which weather conditions could have caused most accidents. We developed visualizations and statistics to answer these questions. We can view the statistics, visualizations, and data distribution for all the conditions using dropdown. <br></p>
+		<select id="imageSelector2" onchange="changeImage2()">
+    			<option value="image8.jpg">States</option>
+			<option value="image9.jpg">Cities</option>
+    			<option value="image10.jpg">Streets</option>
+    			<option value="image11.jpg">Counties</option>
+			<option value="image12.jpg">Nearby Airports</option>
+			<option value="image13.jpg">Weather conditions</option>
+  		</select>
+		<br>
+		<img id="image2" src="image8.jpg" style="width: 1000px; height: 500px; display: block; margin: 0 auto;" alt="Image 1">
+  		<p id = "description2">Above we can see the statistics and the visualizations for the States with highest and the lowest number of accidents within the dataset. Top 5 States with highest accidents are California (604477), Florida (350204), Texas (108714), Oregon (98754), and Virginia (92191). The botton 5 states with lowest accidents are New Mexico (1618), Maine (964), Wyoming (658), Vermont (214), and South Dakota (154).</p>
+		<script>
+			function changeImage2() {
+  			var imageSelector2 = document.getElementById("imageSelector2");
+  			var image2 = document.getElementById("image2");
+  			var description2 = document.getElementById("description2");
+
+  			image2.src = imageSelector2.value;
+
+  			switch(imageSelector2.value) {
+    			case "image8.jpg":
+      		description2.innerHTML = "Above we can see the statistics and the visualizations for the States with highest and the lowest number of accidents within the dataset. Top 5 States with highest accidents are California (604477), Florida (350204), Texas (108714), Oregon (98754), and Virginia (92191). The botton 5 states with lowest accidents are New Mexico (1618), Maine (964), Wyoming (658), Vermont (214), and South Dakota (154).";
+      		break;
+
+    			case "image9.jpg":
+      		description2.innerHTML = "Above we can see the statistics and the visualizations for the Cities with highest and the lowest number of accidents within the dataset. Top 5 Cities with highest accidents are Miami (97723), Los Angeles (56471), Orlando  (49691), Dallas (33052), and Houston (28385). The botton 5 cities with lowest accidents are Hilltown (1), West Gardiner (1), Chepachet (1), Maineville (1), and American Fork-Pleasant Grove (1).";
+      		break;
+
+    			case "image10.jpg":
+      		description2.innerHTML = "Above we can see the statistics and the visualizations for the Streets with highest and the lowest number of accidents within the dataset. Top 5 Streets with highest accidents are I-5 N (29025), I-95 N (28571), I-95 S  (27579), I-5 S (25294), and I-10 E (18275). The botton 5 streets with lowest accidents are Trouble Ln (1), Servando Ave (1), Willow St E (1), Delancy Way (1), and 473-401 Cutoff Rd (1).";
+      		break;
+
+    			case "image11.jpg":
+      		description2.innerHTML = "Above we can see the statistics and the visualizations for the Counties with highest and the lowest number of accidents within the dataset. Top 5 Counties with highest accidents are Los Angeles (163524), Miami-Dade (132288), Orange  (98805), San Bernardino (44840), and San Diego (38620). The botton 5 counties with lowest accidents are Wolfe (1), New Madrid (1), Lubbock (1), Callahan (1), and Walthall (1).";
+      		break;
+
+    			case "image12.jpg":
+      		description2.innerHTML = "Above we can see the statistics and the visualizations for the airport locations with highest and the lowest number of accidents within the dataset. Top 5 airport locations with highest accidents are KCQT (43009), KMIA (41957), KOPF  (35264), KORL (34843), and KTMB (34142). The botton 5 airport locations with lowest accidents are KHDO (1), KFEP (1), KAXO (1), KRSL (1), and KICR (1).";
+      		break;
+
+    			case "image13.jpg":
+      		description2.innerHTML = "Above we can see the statistics and the visualizations for the weather conditions with highest and the lowest number of accidents within the dataset. Top 5 weather conditions with highest accidents are Fair (1042415), Cloudy (334793), Mostly Cloudy  (285317), Partly Cloudy (195367), and Light Rain (106754). The botton 5 weather conditions with lowest accidents are Heavy Freezing Rain (1), Heavy Freezing Drizzle (1), Heavy Rain Shower / Windy (1), Sand / Dust Whirlwinds / Windy (1), and Thunder and Hail / Windy (1).";
+      		break;
+  			}}
+		</script>
+
+		<h3> Distribution by time </h3>
+		<p> We want to see the distribution of the accidents by time. These visualizations would answers questions like which day of the week do most accidents occur, which time of the day do most accidents occur, and which time of the year do most accidents occur. We wanted to develope visualizations to answer these questions and get more information and understand the distribution of data. <br><br></p>
+		<style>
+    		#imageSelector3 {
+  			font-size: 15px;
+  			padding: 10px;
+  			margin: 5px auto;
+  			max-width: 400px;
+  			display: block;
+  			text-align: center;
+			}
+		</style>
+		<select id="imageSelector3" onchange="changeImage3()">
+    			<option value="image14.jpg">Month of the year</option>
+			<option value="image15.jpg">Day of the week </option>
+    			<option value="image16.jpg">Hour of the day</option>
+  		</select>
+		<br>
+		<img id="image3" src="image14.jpg" style="width: 1000px; height: 500px; display: block; margin: 0 auto;" alt="Image 1">
+  		<p id = "description3"> From the visualization above we can see that the accidents are highest during December. It aligns with the festival season which means more traffic on the roads in general. About 18% of the accidents happen over December, November accounts to about 12.5%, and October accounts to about 10%. </p>
+
+		<script>
+			function changeImage3() {
+  			var imageSelector3 = document.getElementById("imageSelector3");
+  			var image3 = document.getElementById("image3");
+  			var description3 = document.getElementById("description3");
+  			image3.src = imageSelector3.value;
+
+  			switch(imageSelector3.value) {
+    			case "image14.jpg":
+      		description3.innerHTML = "From the visualization above we can see that the accidents are highest during December. It aligns with the festival season which means more traffic on the roads in general. About 18% of the accidents happen over December, November accounts to about 12.5%, and October accounts to about 10%.";
+      		break;
+
+    			case "image15.jpg":
+      		description3.innerHTML = "From the visualization we can see friday has the highest number of accidents. This aligns with it being at the end of the week and more often than not people are fatigued by then. More than 17% of the accidents happen on friday and about 16% of them are on Thursday. Sundays have the least number of accidents with under 10% of the total amount.";
+      		break;
+
+    			case "image16.jpg":
+      		description3.innerHTML = "From the visualization above we can see that the accidents are highest between hour 14 and hour 17. It aligns with the time when there is usually the highest amount of traffic on the roads. This happens due to it being the end of the day when everyone is usually going back home and are tired.";
+      		break;
+  			}}
+		</script>
+
+	</div>
+
+	<div id = 'models'>
+	<h2> Modelling </h2>
+	<h3> Column of interest </h3>
+	<style>
+		table {
+			margin: auto; 
+			border-collapse: collapse;
+			border: 2px solid black; 
+		}
+		td, th {
+			border: 2px solid black;
+			padding: 20px;
+			text-align: left;
+		}
+	</style>
+	<p> Our column of interest has been the Severity of an accident. Through this reasearch we wanted to understand how each feature in the dataset is affecting it. In depth, Severity ranges from 1 to 4 and indicates how severe an accident has been. We wanted to see if certain weather conditions, visibility range, or particular locations had any significant impact on the severity of an accident. Using visualization we can understand the distribution of the severity. We can observe that highest number of accident are within severity = 2 and severity = 1 has the least.</p>
+	<img src='image17.jpg' style="width: 1000px; height: 500px; display: block; margin: 0 auto;">
+	<br>
+	<h3> Models and Accuracy scores </h3>
+	<p> We have tried out 4 different models with Severity as our target column. We had Start_Lat, Start_Lng, End_Lat, End_Lng, Distance, Temperature, Wind_Chill, Humidity, Pressure, Visibility, Wind_Speed, Precipitation, Start_Time, End_Time, Street, Side, City, County, State, Timezone, Airport_Code, Weather_Timestamp, Wind_Direction, Weather_Condition, and Sunrise_Sunset in our training data. All the models have given more than 90% accuracy score which is really good. With the results from analysis, we will be able to predict the severity of an accident given rest of the conditions with really good accuracy. </p>
+	<table>
+  		<tr> 
+    		<th> </th> 
+    		<th>Models</th>
+    		<th>Accuracy score</th>
+  		</tr>
+  		<tr>
+		<td> 1. </td>
+    		<td>DecisionTreeClassifier</td> 
+    		<td>0.92</td>
+  		</tr>
+  		<tr>
+		<td> 2. </td>
+    		<td>LogisticRegression</td>
+    		<td>0.93</td>
+  		</tr>
+		<tr>
+		<td> 3. </td>
+    		<td>KNeighborsClassifier</td>
+    		<td>0.94</td>
+  		</tr>
+		<tr>
+		<td> 4. </td>
+    		<td>RandomForestClassifier</td>
+		<td>0.95</td>
+  		</tr>
+	</table>
+	</div>
+
+</body>
+</html>
